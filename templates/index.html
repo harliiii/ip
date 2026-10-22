@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LinkShield — проверка ссылок</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="nav"><a class="brand" href="/"><span class="brand-icon">✦</span> LinkShield</a><nav><a href="#how">Как работает</a><a href="/about">О проекте</a></nav><span class="tag">CYBER AWARENESS</span></header>
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> ЦИФРОВАЯ БЕЗОПАСНОСТЬ</div>
+    <h1>Не дай фишингу<br><span>поймать тебя.</span></h1>
+    <p class="lead">Проверь ссылку на признаки мошенничества за несколько секунд. Просто вставь адрес — алгоритм объяснит, на что обратить внимание.</p>
+    <div class="trust-row"><span>✓ Без перехода по ссылке</span><span>✓ Понятные причины</span><span>✓ Учебный проект</span></div>
+  </div>
+  <div class="hero-art" aria-hidden="true"><div class="orb orb1"></div><div class="orb orb2"></div><div class="shield"><div class="shield-inner">✓</div></div><div class="float-card card-a">🔒 <span>Проверка адреса</span></div><div class="float-card card-b">✦ <span>Защита начинается с внимания</span></div><div class="grid-dots"></div></div>
+</section>
+<section class="checker">
+  <div class="section-heading"><div><span class="kicker">LINK SCANNER</span><h2>Проверка ссылки</h2></div><span class="step">01 <i>/ 03</i></span></div>
+  <p class="muted">Вставь URL целиком или введи домен, например <button class="example" type="button" onclick="document.getElementById('url').value='https://example.com'">example.com</button>.</p>
+  <form method="post" class="scan-form">
+    <div class="input-wrap"><span class="link-symbol">↗</span><input id="url" name="url" type="text" placeholder="https://website.com/login" value="{{ result.url if result and result.url else '' }}" autocomplete="off" required><button type="button" class="clear" onclick="document.getElementById('url').value='';document.getElementById('url').focus()">×</button></div>
+    <button class="scan-btn" type="submit">Проверить ссылку <span>→</span></button>
+  </form>
+  <div class="privacy-note"><span>ⓘ</span> Мы не открываем введённый сайт. Анализируем только структуру адреса.</div>
+  {% if result %}
+    {% if result.error %}
+      <div class="error-box">{{ result.error }}</div>
+    {% else %}
+    <div class="result {{ result.css }}">
+      <div class="result-top"><div><span class="kicker">РЕЗУЛЬТАТ АНАЛИЗА</span><h3>{{ result.label }}</h3><p>{{ result.summary }}</p></div><div class="score"><strong>{{ result.score }}</strong><span>из 10</span></div></div>
+      <div class="meter"><span style="width: {{ result.score * 10 }}%"></span></div>
+      <div class="domain-line"><span class="domain-icon">◎</span><div><small>Проверенный адрес</small><strong>{{ result.host }}</strong></div><span class="status-pill">{{ result.label }}</span></div>
+      <h4 class="checks-title">Что мы заметили</h4>
+      <div class="checks">
+      {% for check in result.checks %}
+        <div class="check"><span class="check-mark {{ check.status }}">{% if check.status == 'good' %}✓{% elif check.status == 'bad' %}!{% elif check.status == 'warn' %}⚠{% else %}i{% endif %}</span><div><strong>{{ check.title }}</strong><p>{{ check.detail }}</p></div></div>
+      {% endfor %}
+      </div>
+      <div class="disclaimer">{{ result.disclaimer }}</div>
+    </div>
+    {% endif %}
+  {% endif %}
+</section>
+<section id="how" class="how">
+ <div class="section-heading"><div><span class="kicker">ПРОСТО И ПОНЯТНО</span><h2>Как это работает?</h2></div></div>
+ <div class="steps">
+  <article><span class="step-num">01</span><div class="step-icon">⌁</div><h3>Вставь ссылку</h3><p>Скопируй адрес из сообщения или письма. Не переходи по нему для проверки.</p></article>
+  <article><span class="step-num">02</span><div class="step-icon">⌕</div><h3>Алгоритм анализирует</h3><p>Программа ищет технические признаки: HTTPS, необычные символы, длину и слова в URL.</p></article>
+  <article><span class="step-num">03</span><div class="step-icon">✧</div><h3>Изучи объяснение</h3><p>Посмотри, какие признаки найдены, и при необходимости проверь сайт другим способом.</p></article>
+ </div>
+</section>
+<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>Главное правило</h2><p>Даже знакомый логотип не доказывает, что сайт настоящий. Проверяй домен и не сообщай пароли по ссылкам из неожиданных сообщений.</p></div></section>
+</main>
+<footer><a class="brand" href="/"><span class="brand-icon">✦</span> LinkShield</a><span>Учебный проект по информатике · 10 класс</span><span>Stay curious. Stay safe.</span></footer>
+</body></html>
